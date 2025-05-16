@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>MWموقع أذكار المسلمMW</title>
+   <link rel="icon" type="image/png" href="72.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #0a1a0f;
+            --text-color: #e0d6c2;
+            --nav-bg: #15271d;
+            --button-bg: #2c5540;
+            --button-color: #ffebcd;
+            --active-bg: #ffd700;
+            --active-color: #1a472a;
+            --card-bg: rgba(21, 39, 29, 0.9);
+            --card-border: #3a6650;
+            --dhikr-category-bg: #0f2419;
+            --dhikr-item-bg: #15271d;
+        }
+
+        .light-mode {
+            --bg-color: #f0f8ff;
+            --text-color: #333;
+            --nav-bg: #e6f2ff;
+            --button-bg: #a7c9e9;
+            --button-color: #1a472a;
+            --active-bg: #3a6650;
+            --active-color: #ffebcd;
+            --card-bg: rgba(231, 241, 255, 0.9);
+            --card-border: #a7c9e9;
+            --dhikr-category-bg: #d6e9f8;
+            --dhikr-item-bg: #e6f2ff;
+        }
+
+        body {
+            font-family: 'Amiri', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            background: var(--nav-bg);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: var(--button-bg);
+            color: var(--button-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-button.active {
+            background: var(--active-bg);
+            color: var(--active-color);
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 6rem auto 2rem;
+            padding: 0 20px;
+        }
+
+        .page {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--card-border);
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .dhikr-category {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--dhikr-category-bg);
+            border-radius: 10px;
+            border-left: 4px solid var(--active-bg);
+        }
+
+        .dhikr-item {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: var(--dhikr-item-bg);
+            border-radius: 8px;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .dhikr-item:hover {
+            transform: translateX(10px);
+        }
+
+        .counter-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--active-bg);
+            color: var(--active-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--active-bg);
+            color: var(--active-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--active-bg);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255,215,0,0.2);
+        }
+
+        h2 {
+            color: var(--card-border);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .details {
+            background: var(--dhikr-category-bg);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .details summary {
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--active-bg);
+        }
+
+        .tasbih-btn {
+            background: var(--button-bg);
+            color: var(--button-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tasbih-btn i {
+            font-size: 1rem;
+        }
+
+        .tasbih-count {
+            background: var(--active-bg);
+            color: var(--active-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--nav-bg);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .date-time {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .clock {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--active-bg);
+        }
+
+        .date {
+            font-size: 1rem;
+        }
+
+        .prayer-times {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .next-prayer {
+            font-weight: bold;
+            color: var(--active-bg);
+        }
+
+        .countdown {
+            font-size: 1.2rem;
+        }
+
+        .prayer-times-table {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            display: none;
+            background: var(--dhikr-category-bg);
+            border-radius: 8px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            width: 200px;
+        }
+
+        .prayer-times:hover .prayer-times-table {
+            display: block;
+        }
+
+        .prayer-times-table div {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+        }
+
+        .loading-indicator {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border: 2px solid var(--active-bg);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .refresh-button {
+            background: var(--button-bg);
+            color: var(--button-color);
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .repeat-badge {
+            display: inline-block;
+            background-color: var(--active-bg);
+            color: var(--active-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .dhikr-number {
+            font-weight: bold;
+            color: var(--active-bg);
+            margin-left: 0.5rem;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--button-bg);
+            color: var(--button-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+        }
+
+        .surah {
+            font-weight: bold;
+            color: var(--active-bg);
+        }
+
+        .dhikr-item h3 {
+            color: var(--active-bg);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* قواعد التجاوب مع أحجام الشاشات المختلفة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+                margin-top: 8rem;
+            }
+
+            .nav-container {
+                padding: 0.5rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-button {
+                width: 100%;
+                padding: 0.6rem 1rem;
+                font-size: 1rem;
+            }
+
+            .header-info {
+                flex-direction: column;
+                padding: 0.5rem;
+                gap: 1rem;
+            }
+
+            .date-time, .prayer-times {
+                width: 100%;
+            }
+
+            .clock {
+                font-size: 1.2rem;
+            }
+
+            .date {
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .dhikr-category {
+                padding: 1rem;
+            }
+
+            .dhikr-item {
+                padding: 0.8rem;
+            }
+
+            .counter-btn, .theme-toggle {
+                width: 50px;
+                height: 50px;
+            }
+
+            .prayer-times-table {
+                width: 100%;
+                position: static;
+                display: block;
+                margin-top: 1rem;
+            }
+
+            .prayer-times:hover .prayer-times-table {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin-top: 10rem;
+            }
+
+            .nav-buttons {
+                gap: 0.3rem;
+            }
+
+            .nav-button {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            .dhikr-item p {
+                font-size: 0.95rem;
+            }
+
+            .tasbih-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dhikr-item h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <nav class="nav-buttons">
+    <button class="nav-button active" onclick="showPage('morning')">أذكار الصباح</button>
+    <button class="nav-button" onclick="showPage('evening')">أذكار المساء</button>
+    <button class="nav-button" onclick="showPage('prayer')">أذكار بعد الصلاة</button>
+    <button class="nav-button" onclick="showPage('dua')">الأدعية</button>
+</nav>
+    </div>
+
+    <div class="container">
+        <div class="header-info">
+            <div class="date-time">
+                <div class="clock" id="clock">00:00:00 ص</div>
+                <div class="date" id="date">الأحد، 1 رمضان 1445 - 10 مارس 2024</div>
+            </div>
+            <div class="prayer-times">
+                <div class="next-prayer" id="next-prayer">
+                    <span id="loading-prayer" class="loading-indicator"></span>
+                    جاري تحميل أوقات الصلاة...
+                </div>
+                <div class="countdown" id="countdown">00:00:00</div>
+                <button class="refresh-button" onclick="fetchPrayerTimes()">
+                    <i class="fas fa-sync-alt"></i> تحديث
+                </button>
+                <div class="prayer-times-table" id="prayer-times-table">
+                    <div><span>الفجر:</span> <span id="fajr-time">--:--</span></div>
+                    <div><span>الشروق:</span> <span id="sunrise-time">--:--</span></div>
+                    <div><span>الظهر:</span> <span id="dhuhr-time">--:--</span></div>
+                    <div><span>العصر:</span> <span id="asr-time">--:--</span></div>
+                    <div><span>المغرب:</span> <span id="maghrib-time">--:--</span></div>
+                    <div><span>العشاء:</span> <span id="isha-time">--:--</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة أذكار الصباح -->
+        <div id="morning" class="page active">
+            <h1>أذكار الصباح</h1>
+            
+            <div class="dhikr-category">
+                <h2>ما يُقال مرة واحدة</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> آية الكرسي:</p>
+                    <p>اللَّهُ لا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لا تَأْخُذُهُ سِنَةٌ وَلا نَوْمٌ لَهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالأَرْضَ وَلا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ ، خَلَقْتَنِي وَأَنا عَبْدُكَ ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْت، أَعوذُ بِكَ مِنْ شَرِ مَا صَنَعْت ، أَبوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لا يَغْفِرُ الذُّنوبَ إِلَّا أَنْتَ .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٣ -</span> أَصْبَحْنا وَأَصْبَحَ المُلْكُ الله ، وَالحَمدُ لله ، لا إلهَ إِلَّا اللهُ وحدَهُ لا شَريكَ لهُ، لهُ المُلكُ ولهُ الحَمْد ، وهُوَ على كلّ شَيءٍ قدير ، رَبِّ أَسْأَلُكَ خَيْرَ ما في هذا اليوم وَخَيْرَ ما بَعْدَه ، وَأَعوذُ بِكَ مِنْ شَرِ ما في هذا اليوم وَشَرِ ما بَعْدَه ، رَبِّ أَعوذُ بِكَ مِنَ الْكَسَلِ وَسوءِ الْكِبَر ، رَبِّ أَعوذُ بِكَ مِنْ عَذَابِ فِي النَّارِ وَعَذَابٍ في القبر.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٤ -</span> أَصْبَحْنا وَأَصْبَحَ المُلكُ اللَّهِ رَبِّ العَالَمِين ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْر هذا اليَوْم ، فَتَحَهُ ، وَنَصْرَهُ ، وَنُورَهُ وَبَرَكَتَهُ ، وَهُداهُ ، وَأَعوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ ما بَعْدَه .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٥ -</span> أَصْبَحْنا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ ، وعلى ملة أبينا إبراهيم حنيفا مسلماً وما كان من المشركين.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٦ -</span> اللَّهُمَّ بِكَ أَصْبَحْنا وبك أَمْسَينا ، وَبِكَ نَحْيا ، وَبِكَ نَمُوتُ ، وَإِلَيْكَ النُّشُور .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٧ -</span> اللَّهُمَّ مَا أَصْبَحَ بي مِنْ نِعْمَةٍ أَو بِأَحَدٍ مِنْ خَلْقِكَ ، فَمِنْكَ وَحْدَكَ لا شريكَ لَكَ ، فَلَكَ الْحَمْدُ وَلَكَ الشَّكْر.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٨ -</span> اللَّهُمَّ إِنِّي أَسْأَلُكَ العفو العافية في الدُّنْيا وَالآخِرَةِ ، اللهُمَّ إِنِّي أَسْأَلُكَ العَفْوَ وَالعافية في ديني وَدُنْيَايَ وَأهْلي وَمالي ، اللَّهُمَّ اسْتُرْ عَوْراتي وَآمِنْ رَوْعاتي ، اللَّهُمَّ احْفَظْنِي مِن بَيْنِ يَدَيَّ وَمِن خَلْفِي وَعَن يَمِينِي وَعَن شِمالي ، وَمِن فَوْقي ، وَأَعُوذُ بِعَظَمَتِكَ أَن أُغْتَالَ مِن تَحْتِي .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٩ -</span> اللهم إني أسألك علما نافعا ، ورزقا طيبا ، وعملا متقبلا .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١٠ -</span> اللَّهُمَّ فَاطِرَ السَّماواتِ وَالْأَرْضِ ، عَالِمَ الغَيْبِ وَالشَّهَادَةِ ، رَبَ كُلِّ شَيْءٍ وَمَلِيكَهُ ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ ، أَعوذُ بِكَ مِن شَرِ نَفْسِي وَمِن شَرِ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسي سوءاً أَوْ أَجْرَّهُ إِلَى مُسْلِم .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١١ -</span> يا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيتُ ، أَصْلِحْ لِي شَأْنِي كُلَّه وَلَا تَكِلْني إِلَى نَفْسِي طَرْفَةَ عَين .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dhikr-category">
+                <h2>ما يُقال ثلاث مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> سورة الإخلاص، سورة الفلق، سورة الناس.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> بِسمِ اللهِ الذي لا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السماء وهو السميع العليم.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٣ -</span> رَضِيتُ بِاللهِ رَبّا ، وَبِالإِسْلامِ دينا ، وَبِمُحَمَّدٍ نَبِيًّا .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٤ -</span> سُبْحانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ وَرِضا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٥ -</span> اللهم عافني في بدني ، اللهم عافني في سمعي ، اللهُمَّ عافني في بصري ، لا إلهَ إِلَّا أَنْتَ ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالفَقْرِ ، وَأَعوذُ بِكَ مِنْ عَذَابِ القَبْرِ ، لَا إِلَهَ إِلَّا أَنْتِ</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٦ -</span> أعوذ بكلماتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَق .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال أربع مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p>اللَّهُمَّ إِنِّي أَصْبَحْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِك، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ ، وَحْدَكَ لا شَريكَ لَكَ ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسولُك .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">4</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال سبع مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p>حَسْبِيَ اللهُ لا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ العَرْشِ العظيم .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">7</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال عشر مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> لا إلهَ إِلَّا اللهُ وَحْدَهُ لا شَريكَ لَهُ ، لَهُ المُلْكُ ولهُ الحَمْدُ وَهُوَ على كُلِّ شَيءٍ قدير. فإن زادها إلى مئة مرة فأفضل.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">10</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> اللهم صل وسلم على نبينا محمد</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">10</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال مئة مرة</h2>
+                
+                <div class="dhikr-item">
+                    <p>سُبْحَانَ اللَّهِ وَبِحَمْدِهِ.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">100</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة أذكار المساء -->
+        <div id="evening" class="page">
+            <h1>أذكار المساء</h1>
+            
+            <div class="dhikr-category">
+                <h2>ما يُقال مرة واحدة</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> آية الكرسي:</p>
+                    <p>اللَّهُ لا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لا تَأْخُذُهُ سِنَةٌ وَلا نَوْمٌ لَهُ مَا فِي السَّمَوَاتِ وَمَا فِي الأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَوَاتِ وَالأَرْضَ وَلا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ ، خَلَقْتَنِي وَأَنا عَبْدُكَ ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْت، أَعوذُ بِكَ مِنْ شَرِ مَا صَنَعْت ، أَبوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لا يَغْفِرُ الذُّنوبَ إِلَّا أَنْتَ .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٣ -</span> أمسينا وأمسى الملك الله ، وَالحَمدُ لله ، لا إلهَ إِلَّا اللهُ وحدَهُ لا شَريكَ لهُ، لهُ المُلكُ ولهُ الحَمْد ، وهُوَ على كلّ شَيءٍ قدير ، رَبِّ أَسْأَلُكَ خَيْرَ ما في هذا اليوم وَخَيْرَ ما بَعْدَه ، وَأَعوذُ بِكَ مِنْ شَرِ ما في هذا اليوم وَشَرِ ما بَعْدَه ، رَبِّ أَعوذُ بِكَ مِنَ الْكَسَلِ وَسوءِ الْكِبَر ، رَبِّ أَعوذُ بِكَ مِنْ عَذَابِ فِي النَّارِ وَعَذَابٍ في القبر.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٤ -</span> أمسينا وأمسى الملك الله رَبِّ العَالَمِين ، اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْر هذا اليله ، فَتَحَهُ ، وَنَصْرَهُ ، وَنُورَهُ وَبَرَكَتَهُ ، وَهُداهُ ، وَأَعوذُ بِكَ مِنْ شَرِّ مَا فِيهِ وَشَرِّ ما بَعْدَه .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٥ -</span> أمسينا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ ، وعلى ملة أبينا إبراهيم حنيفا مسلماً وما كان من المشركين .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٦ -</span> اللَّهُمَّ بِكَ أَمْسَيْنَا ، وَبِكَ أَصْبَحْنَا وَبِكَ نَحْيا وَبِكَ نَمُوتُ وَإِلَيْكَ المصير .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٧ -</span> ما أمسى بي مِنْ نِعْمَةٍ أَو بِأَحَدٍ مِنْ خَلْقِكَ ، فَمِنْكَ وَحْدَكَ لا شريكَ لَكَ ، فَلَكَ الْحَمْدُ وَلَكَ الشَّكْر.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٨ -</span> اللَّهُمَّ إِنِّي أَسْأَلُكَ العفو العافية في الدُّنْيا وَالآخِرَةِ ، اللهُمَّ إِنِّي أَسْأَلُكَ العَفْوَ وَالعافية في ديني وَدُنْيَايَ وَأهْلي وَمالي ، اللَّهُمَّ اسْتُرْ عَوْراتي وَآمِنْ رَوْعاتي ، اللَّهُمَّ احْفَظْنِي مِن بَيْنِ يَدَيَّ وَمِن خَلْفِي وَعَن يَمِينِي وَعَن شِمالي ، وَمِن فَوْقي ، وَأَعُوذُ بِعَظَمَتِكَ أَن أُغْتَالَ مِن تَحْتِي .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٩ -</span> اللهم إني أسألك علما نافعا ، ورزقا طيبا ، وعملا متقبلا .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١٠ -</span> اللَّهُمَّ فَاطِرَ السَّماواتِ وَالْأَرْضِ ، عَالِمَ الغَيْبِ وَالشَّهَادَةِ ، رَبَ كُلِّ شَيْءٍ وَمَلِيكَهُ ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ ، أَعوذُ بِكَ مِن شَرِ نَفْسِي وَمِن شَرِ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَى نَفْسي سوءاً أَوْ أَجْرَّهُ إِلَى مُسْلِم .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١١ -</span> يا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيتُ ، أَصْلِحْ لِي شَأْنِي كُلَّه وَلَا تَكِلْني إِلَى نَفْسِي طَرْفَةَ عَين .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dhikr-category">
+                <h2>ما يُقال ثلاث مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> سورة الإخلاص، سورة الفلق، سورة الناس.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> بِسمِ اللهِ الذي لا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السماء وهو السميع العليم.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٣ -</span> رَضِيتُ بِاللهِ رَبّا ، وَبِالإِسْلامِ دينا ، وَبِمُحَمَّدٍ نَبِيًّا .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٤ -</span> سُبْحانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ وَرِضا نَفْسِهِ وَزِنَةَ عَرْشِهِ وَمِدَادَ كَلِمَاتِهِ .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٥ -</span> اللهم عافني في بدني ، اللهم عافني في سمعي ، اللهُمَّ عافني في بصري ، لا إلهَ إِلَّا أَنْتَ ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالفَقْرِ ، وَأَعوذُ بِكَ مِنْ عَذَابِ القَبْرِ ، لَا إِلَهَ إِلَّا أَنْتِ</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٦ -</span> أعوذ بكلماتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَق .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">3</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال أربع مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p>اللَّهُمَّ إِنِّي أمسيت أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِك، وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ ، أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ ، وَحْدَكَ لا شَريكَ لَكَ ، وَأَنَّ مُحَمَّداً عَبْدُكَ وَرَسولُك .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">4</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال سبع مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p>حَسْبِيَ اللهُ لا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ العَرْشِ العظيم .</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">7</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال عشر مرات</h2>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">١ -</span> لا إلهَ إِلَّا اللهُ وَحْدَهُ لا شَريكَ لَهُ ، لَهُ المُلْكُ ولهُ الحَمْدُ وَهُوَ على كُلِّ شَيءٍ قدير. فإن زادها إلى مئة مرة فأفضل.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">10</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p><span class="dhikr-number">٢ -</span> اللهم صل وسلم على نبينا محمد</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">10</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dhikr-category">
+                <h2>ما يقال مئة مرة</h2>
+                
+                <div class="dhikr-item">
+                    <p>سُبْحَانَ اللَّهِ وَبِحَمْدِهِ.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                        <span class="repeat-badge">100</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة أذكار بعد الصلاة -->
+        <div id="prayer" class="page">
+            <h1>أذكار بعد الصلاة</h1>
+            
+            <div class="dhikr-category">
+                <h2>الأذكار الأساسية</h2>
+                
+                <div class="dhikr-item">
+                    <p>اللَّهُمَّ أَنْتَ السَّلَامُ، وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                                <div class="dhikr-item">
+                    <p>لا إلهَ إلاّ اللّهُ وَحْـدَهُ لا شريكَ لهُ، لهُ الملكُ ولهُ الحَمْد، وهُوَ على كُلّ شَيءٍ قَـدير</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>أَسْتَغْفِرُ اللَّهَ (ثلاث مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p>سُـبْحانَ اللهِ، والحَمْـدُ لله، واللهُ أكْـبَر (ثلاثاً وثلاثين مرة)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم_قُلْ هُوَ ٱللَّهُ أَحَدٌ، ٱللَّهُ ٱلصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ.(ثلاث مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم_قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ، مِن شَرِّ مَا خَلَقَ، وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ، وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ، وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ
+                        .(ثلاث مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>بِسْمِ اللهِ الرَّحْمنِ الرَّحِيم_قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ، مَلِكِ ٱلنَّاسِ، إِلَٰهِ ٱلنَّاسِ، مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ، ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ، مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ.
+                        (ثلاث مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p>لا إلهَ إلاّ اللّهُ وحدَهُ لا شريكَ لهُ، لهُ المُلكُ ولهُ الحَمْدُ وهوَ على كلّ شيءٍ قدير، اللّهُمّ لا مانِعَ لِما أعْطَيْت، ولا مُعْطِيَ لِما مَنَعْت، ولا يَنْفَعُ ذا الجَدِّ مِنْكَ الجَدُّ
+                        (عشر مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+                
+                <div class="dhikr-item">
+                    <p>لا إلهَ إلاّ اللّه, وحدَهُ لا شريكَ لهُ، لهُ الملكُ ولهُ الحَمدُ، وهوَ على كلّ شيءٍ قدير، لا حَوْلَ وَلا قوّةَ إلاّ باللّهِ، لا إلهَ إلاّ اللّـه، ولا نَعْبُـدُ إلاّ إيّـاه، لهُ النِّعْـمَةُ ولهُ الفَضْل ولهُ الثَّـناءُ الحَـسَن، لا إلهَ إلاّ اللّهُ مخْلِصـينَ لهُ الدِّينَ ولو كَـرِهَ الكـافرون
+                        (عشر مرات)</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>اللَّهُمَّ أَجِرْنِي مِنْ النَّار</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+
+                <div class="dhikr-item">
+                    <p>اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ.</p>
+                    <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                        <i class="fas fa-prayer-beads"></i> سبح
+                        <span class="tasbih-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الأدعية -->
+        <div id="dua" class="page">
+    <h1>الأدعية والأذكار</h1>
+    
+    <div class="dhikr-category">
+        <h2>أدعية متنوعة</h2>
+        
+        <div class="dhikr-item">
+            <p>اللهم إني أسألك العفو والعافية في الدنيا والآخرة</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم إني أعوذ بك من زوال نعمتك، وتحول عافيتك، وفجاءة نقمتك، وجميع سخطك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللَّهُمَّ اجْعَلْهُ صَباحاً يَمْلَأُ الْأَجْسَادِ عَافِيَة وَالرُّوح فرحا اللَّهُمْ أَرِحْنَا مِنْ هُمُومٍ الدُّنْيَا وَارْزُقْنَا التَّوْفِيقِ فِي جَمِيعِ أُمُورِنَا رَبِّي نَسْأَلُكَ هُدُوء النَّفْسِ وَطَمَأْنِينَةِ الْقَلْبِ وَانْشِرَاحَ الصَّدْرِ وتوفيقاً يُرَافِقِ خطانا وسعادة تملأ قُلُوبِنَا</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم استرنا بسترك الجميل الذي سترت به نفسك فلا عين تراك، ولا يد تمسكك، ولا تفضحنا بين خلقك، ولا تحزننا يوم القيامة، اللهم اعلي بفضلك كلمة الحق والدين، اللهم استرنا فوق الأرض وتحت الأرض، واسترنا يوم العرض عليك.</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>يَا رَبِّ اجْعَلْنِي ذُو حَظٍّ عَظِيمٍ وَشَأْنٍ عَظِيمٍ وَسَخَّرْ لِيَ الْأَرْضَ وَمَنْ عَلَيْهَا وَارْزُقْنِي رِزْقًا وَفِيرًا وَبَارِكْ لِي فِيهِ وَهَبْ لِي مَا أَتَمَنَّى وَمَا أُرِيدُ اللَّهُمَّ جَبْرًا لِقَلْبِي وَ رُوحِي ، اللَّهُمَّ أَرِنِي الْفَرَحَ فِي كُلِّ مَا أُرِيدُ ، يَارِبَ الْعِوَضِ الْجَمِيلُ بَعْدَ الصَّبْرِ الطَّوِيلِ ، اللَّهُمَّ دَرْبًا لَا تَضِيقُ بِهِ الْحَيَاةُ وَقَلْبًا لَا يَزُولُ مِنْهُ الْأَمَلُ ، يَارِبُ إِزْرَعُ فِي قَلْبِي رَاحَةً دَائِمَةً وَأَمَلًا لَا يَخِيبُ ، اللَّهُمَّ إِرْزَقْنِي فَرْحَةً تُعَوِّضُ قَلْبِي عَنْ كُلِّ مَا فَاتَ اللَّهُمَّ سَامِحْنِي عَلَى كُلِّ صَلَاةٍ تَرَكْتُهَا وَعَلَى كُلِّ رَكْعَةٍ لِمَ اعْطِيهَا فِي الْخُشُوعِ حَقَّهَا وَاغْفِرْ لِي يَا غَفُورُ كُلَّ ذَنْبٍ وَمَعْصِيَةٍ فَعَلْتُهَا</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="dhikr-category">
+        <h2>أدعية الاستغفار</h2>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل ذنب أذنبته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل مؤمن اهنته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل انسان ظلمته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل زور نطقته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استفغر الله لكل باطلا اتبعته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل عهد اتبعته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل ذنب رايته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل ذنب سمعته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله لكل ذنب قلته</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>استغفر الله العظيم من كل ذنب ، اذنبته استغفر الله العظيم من كل فرض تركته استغفر الله العظيم من كل إنسان ظلمته استغفر الله العظيم من كل صالح جفوته استغفر الله العظيم من كل ظالم صاحبته استغفر الله العظيم من كل بر أجلته استغفر الله العظيم من كل ناصح اهنته استغفر الله العظيم من كل محمود سئمته استغفر الله العظيم من كل زور نطقت به استغفر الله العظيم من كل حق اضعته استغفر الله العظيم من كل باطل إتبعته استغفر الله العظيم من كل وقت أهدرته استغفر الله العظيم من كل ضمير قتلته استغفر الله العظيم من كل سر أفشيت استغفر الله العظيم من كل أمين خدعته استغفر الله العظيم من كل وعد اخلفته استغفر الله العظيم من كل عهد ، خنته استغفر الله العظيم من كل امرئ خذلته استغفر الله العظيم من كل صواب كتمته استغفر الله العظيم من كل خطأ تفوهت به استغفر الله العظيم من كل عرض هتكته استغفر الله العظيم من كل سره فضحته استغفر الله العظيم من كل لغو سمعته استغفر الله العظيم من كل حرام نظرت اليه</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="dhikr-category">
+        <h2>أدعية متنوعة</h2>
+        
+        <div class="dhikr-item">
+            <p>سبحان الله وبحمده سبحان الله العضيم</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>لا إله إلا الله والحمد لله والله واكبر</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>لا حول ولا قوه الا بالله</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>لا اله الا انت سبحانك اني كنت من الضالمين الله لا اله اله هو عليه توكلت وهو رب العرش العضيم حسبي</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم لك الحمد حمداً كثيراً طيباً ملء السموات وملء الارض وملء م بينهما</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم ارزقني من حيث لا احتسب</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم احسن خاتمتي وتوفني وانت راض عني</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم ثبت قلبي على دينك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم رضاك والجنه</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم احشرني مع نبيك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم اجرني من عذاب النار</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم قني من عذابك يوم تبعث عبادك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم احينا على رضاك وامتنا على رضاك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم اني فوضت امري اليك</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>اللهم استرني فوق الارض وتحت الارض ويوم العرض اللهم اغفرلي والوالدي وللمسلمين والمسلمات الاحياء منهم والاموات اللهم اجعلها صدقه جاريه لي ولكم ولوالدي وجميع المسلمين</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- قسم أذكار النوم -->
+    <div class="dhikr-category">
+        <h2>أذكار النوم</h2>
+        
+        <div class="dhikr-item">
+            <p>«بِاسْمِكَ رَبِّـي وَضَعْـتُ جَنْـبي، وَبِكَ أَرْفَعُـه، فَإِن أَمْسَـكْتَ نَفْسـي فارْحَـمْها ، وَإِنْ أَرْسَلْتَـها فاحْفَظْـها بِمـا تَحْفَـظُ بِه عِبـادَكَ الصّـالِحـين». (مرة واحدة)</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>«اللّهُـمَّ إِنَّـكَ خَلَـقْتَ نَفْسـي وَأَنْـتَ تَوَفّـاهـا لَكَ ممَـاتـها وَمَحْـياها، إِنْ أَحْيَيْـتَها فاحْفَظْـها، وَإِنْ أَمَتَّـها فَاغْفِـرْ لَـها. اللّهُـمَّ إِنَّـي أَسْـأَلُـكَ العـافِـيَة». (مرة واحدة)</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>«اللّهُـمَّ قِنـي عَذابَـكَ يَـوْمَ تَبْـعَثُ عِبـادَك». (مرة واحدة)</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>«الـحَمْدُ للهِ الَّذي أَطْـعَمَنا وَسَقـانا، وَكَفـانا، وَآوانا، فَكَـمْ مِمَّـنْ لا كـافِيَ لَـهُ وَلا مُـؤْوي». (مرة واحدة)</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p>«اللّهُـمَّ أَسْـلَمْتُ نَفْـسي إِلَـيْكَ، وَفَوَّضْـتُ أَمْـري إِلَـيْكَ، وَوَجَّـهْتُ وَجْـهي إِلَـيْكَ، وَأَلْـجَـاْتُ ظَهـري إِلَـيْكَ، رَغْبَـةً وَرَهْـبَةً إِلَـيْكَ، لا مَلْجَـأَ وَلا مَنْـجـا مِنْـكَ إِلاّ إِلَـيْكَ، آمَنْـتُ بِكِتـابِكَ الّـذي أَنْزَلْـتَ وَبِنَبِـيِّـكَ الّـذي أَرْسَلْـت». (مرة واحدة)</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- قسم أدعية القرآن -->
+    <div class="dhikr-category">
+        <h2>أدعية القرآن الكريم</h2>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">١ -</span> <span class="surah">[الفاتحة: 6، 7]</span> "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ * صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٢ -</span> <span class="surah">[البقرة: 127]</span> "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٣ -</span> <span class="surah">[البقرة: 201]</span> "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٤ -</span> <span class="surah">[البقرة: 250]</span> "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا وَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٥ -</span> <span class="surah">[البقرة: 286]</span> "رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٦ -</span> <span class="surah">[البقرة: 286]</span> "رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٧ -</span> <span class="surah">[البقرة: 286]</span> "رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٨ -</span> <span class="surah">[آل عمران: 8]</span> "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً إِنَّكَ أَنْتَ الْوَهَّابُ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">٩ -</span> <span class="surah">[آل عمران: 16]</span> "رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <p><span class="dhikr-number">١٠ -</span> <span class="surah">[آل عمران: 38]</span> "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- قسم أدعية الأنبياء -->
+    <div class="dhikr-category">
+        <h2>أدعية الأنبياء في القرآن</h2>
+        
+        <div class="dhikr-item">
+            <h3>دعاء إبراهيم عليه السلام:</h3>
+            <p><span class="surah">[البقرة: 126]</span> "وَإِذْ قَالَ إِبْرَاهِيمُ رَبِّ اجْعَلْ هَذَا بَلَدًا آمِنًا وَارْزُقْ أَهْلَهُ مِنَ الثَّمَرَاتِ مَنْ آمَنَ مِنْهُمْ بِاللَّهِ وَالْيَوْمِ الْآخِرِ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <h3>دعاء موسى عليه السلام:</h3>
+            <p><span class="surah">[طه: 25-28]</span> "قَالَ رَبِّ اشْرَحْ لِي صَدْرِي * وَيَسِّرْ لِي أَمْرِي * وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي * يَفْقَهُوا قَوْلِي"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <h3>دعاء يونس عليه السلام:</h3>
+            <p><span class="surah">[الأنبياء: 87]</span> "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <h3>دعاء أيوب عليه السلام:</h3>
+            <p><span class="surah">[الأنبياء: 83]</span> "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنْتَ أَرْحَمُ الرَّاحِمِينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+        
+        <div class="dhikr-item">
+            <h3>دعاء زكريا عليه السلام:</h3>
+            <p><span class="surah">[الأنبياء: 89]</span> "رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ"</p>
+            <button class="tasbih-btn" onclick="incrementTasbih(this)">
+                <i class="fas fa-prayer-beads"></i> سبح
+                <span class="tasbih-count">0</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+        <div class="footer">
+            MWموقع أذكار المسلمMW© 2024 - جميع الحقوق محفوظة 
+        </div>
+    </div>
+
+        <div class="footer">
+            المصمم اسامه لاتنسوه من الدعاء 
+        </div>
+    </div>
+
+    <!-- تأكد أنك رابط هذا الخط في <head> أو قبل نهاية </body> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<div class="footer" style="text-align: center; margin-top: 20px;">
+  <a href="https://t.me/OSAMMW" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; padding: 12px 20px; background-color: #0088cc; color: white; border-radius: 10px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); transition: 0.3s;">
+    <img src="72.png" alt="شعار MW" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 10px;">
+    <i class="fab fa-telegram" style="font-size: 28px; margin-right: 10px;"></i>
+    انضم للقناة
+  </a>
+</div>
+
+
+    <div class="counter-btn" onclick="openCounter()">
+        <span>سبح</span>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="theme-icon"></i>
+    </div>
+    
+    <div class="scroll-to-top" id="scrollToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // تهيئة الوضع المظلم/المضيء
+        let isDarkMode = true;
+        
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('light-mode', !isDarkMode);
+            document.getElementById('theme-icon').className = isDarkMode ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // تحميل الوضع المحفوظ
+        if (localStorage.getItem('darkMode') === 'false') {
+            toggleTheme();
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // العودة إلى أعلى الصفحة عند تغيير القسم
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        let count = 0;
+        let lastTap = 0;
+        const counterBtn = document.querySelector('.counter-btn');
+
+        function openCounter() {
+            const now = new Date().getTime();
+            if (now - lastTap < 300) { // Double tap
+                count = 0;
+                updateCounter();
+            } else {
+                count++;
+            }
+            lastTap = now;
+            updateCounter();
+        }
+
+        function updateCounter() {
+            counterBtn.innerHTML = count;
+            localStorage.setItem('dhikrCounter', count);
+        }
+
+        function incrementTasbih(button) {
+            const countElement = button.querySelector('.tasbih-count');
+            let count = parseInt(countElement.textContent);
+            count++;
+            countElement.textContent = count;
+            
+            // حفظ العدد في التخزين المحلي
+            const uniqueId = button.closest('.dhikr-item').querySelector('p').textContent.substring(0, 20);
+            localStorage.setItem('tasbih_' + uniqueId, count);
+        }
+
+        // أوقات الصلاة
+        let prayerTimes = {
+            fajr: { hour: 0, minute: 0 },
+            sunrise: { hour: 0, minute: 0 },
+            dhuhr: { hour: 0, minute: 0 },
+            asr: { hour: 0, minute: 0 },
+            maghrib: { hour: 0, minute: 0 },
+            isha: { hour: 0, minute: 0 }
+        };
+
+        // تحديث الساعة والتاريخ
+        function updateClock() {
+            const now = new Date();
+            
+            // تنسيق الساعة بنظام 12 ساعة
+            let hours = now.getHours();
+            const ampm = hours >= 12 ? 'م' : 'ص';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // الساعة 0 تصبح 12
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            
+            // أسماء الأيام بالعربية
+            const daysAr = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const monthsAr = ['يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+            
+            const dayName = daysAr[now.getDay()];
+            const day = now.getDate();
+            const month = monthsAr[now.getMonth()];
+            const year = now.getFullYear();
+            
+            // التاريخ الهجري (تقريبي)
+            const hijriDate = getHijriDate(now);
+            
+            const dateString = `${dayName}، ${hijriDate.day} ${hijriDate.monthName} ${hijriDate.year} - ${day} ${month} ${year}`;
+            
+            document.getElementById('clock').textContent = timeString;
+            document.getElementById('date').textContent = dateString;
+            
+            // تحديث مؤقت أوقات الصلاة
+            updatePrayerCountdown();
+            
+            setTimeout(updateClock, 1000);
+        }
+        
+        // دالة لحساب التاريخ الهجري (تقريبي)
+        function getHijriDate(date) {
+            const hijriMonths = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+            
+            // حساب تقريبي للتاريخ الهجري
+            const timestamp = date.getTime();
+            const hijriYear = Math.floor((timestamp - 1970) / 31556952000) + 1390; // تقريب بسيط
+            const hijriMonth = Math.floor(((timestamp % 31556952000) / 31556952000) * 12);
+            const hijriDay = Math.floor(((timestamp % 2629746000) / 2629746000) * 30) + 1;
+            
+            return {
+                day: hijriDay,
+                month: hijriMonth + 1,
+                monthName: hijriMonths[hijriMonth],
+                year: hijriYear
+            };
+        }
+        
+        // جلب أوقات الصلاة
+        async function fetchPrayerTimes() {
+            try {
+                document.getElementById('loading-prayer').style.display = 'inline-block';
+                document.getElementById('next-prayer').innerHTML = '<span id="loading-prayer" class="loading-indicator"></span> جاري تحميل أوقات الصلاة...';
+                
+                // استخدام API الأذان للحصول على أوقات الصلاة في الرياض
+                const today = new Date();
+                const month = today.getMonth() + 1;
+                const year = today.getFullYear();
+                
+                const url = `https://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=Riyadh&country=Saudi Arabia&method=4`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.code === 200 && data.data && data.data.length > 0) {
+                    // الحصول على أوقات اليوم الحالي
+                    const day = today.getDate() - 1; // الفهرس يبدأ من 0
+                    const todayTimes = data.data[day].timings;
+                    
+                    // تحويل الأوقات إلى كائنات ساعة ودقيقة
+                    prayerTimes = {
+                        fajr: parseAPITime(todayTimes.Fajr),
+                        sunrise: parseAPITime(todayTimes.Sunrise),
+                        dhuhr: parseAPITime(todayTimes.Dhuhr),
+                        asr: parseAPITime(todayTimes.Asr),
+                        maghrib: parseAPITime(todayTimes.Maghrib),
+                        isha: parseAPITime(todayTimes.Isha)
+                    };
+                    
+                    // تحديث جدول أوقات الصلاة
+                    document.getElementById('fajr-time').textContent = formatTime(prayerTimes.fajr);
+                    document.getElementById('sunrise-time').textContent = formatTime(prayerTimes.sunrise);
+                    document.getElementById('dhuhr-time').textContent = formatTime(prayerTimes.dhuhr);
+                    document.getElementById('asr-time').textContent = formatTime(prayerTimes.asr);
+                    document.getElementById('maghrib-time').textContent = formatTime(prayerTimes.maghrib);
+                    document.getElementById('isha-time').textContent = formatTime(prayerTimes.isha);
+                    
+                    // حفظ أوقات الصلاة في التخزين المحلي مع وقت الجلب
+                    const fetchTime = new Date().getTime();
+                    localStorage.setItem('prayerTimes', JSON.stringify({
+                        times: prayerTimes,
+                        fetchTime: fetchTime
+                    }));
+                    
+                    // تحديث العد التنازلي
+                    updatePrayerCountdown();
+                    
+                    document.getElementById('loading-prayer').style.display = 'none';
+                } else {
+                    throw new Error('فشل في الحصول على أوقات الصلاة من API');
+                }
+            } catch (error) {
+                console.error('خطأ في جلب أوقات الصلاة:', error);
+                document.getElementById('next-prayer').innerHTML = 'تعذر تحميل أوقات الصلاة <i class="fas fa-exclamation-circle"></i>';
+                
+                // استخدام الأوقات المخزنة إذا كانت متوفرة
+                const savedTimes = localStorage.getItem('prayerTimes');
+                if (savedTimes) {
+                    const { times } = JSON.parse(savedTimes);
+                    prayerTimes = times;
+                    updatePrayerCountdown();
+                }
+            }
+        }
+
+        // تحليل وقت الصلاة من API
+        function parseAPITime(timeStr) {
+            // الأوقات من API تأتي بتنسيق "HH:MM (GMT+3)"
+            const timePart = timeStr.split(' ')[0];
+            const [hourStr, minuteStr] = timePart.split(':');
+            
+            const hour = parseInt(hourStr, 10);
+            const minute = parseInt(minuteStr, 10);
+            
+            return { hour, minute };
+        }
+        
+        // تنسيق الوقت للعرض
+        function formatTime(time) {
+            let hour = time.hour;
+            const minute = time.minute.toString().padStart(2, '0');
+            const ampm = hour >= 12 ? 'م' : 'ص';
+            
+            hour = hour % 12;
+            hour = hour ? hour : 12; // الساعة 0 تصبح 12
+            
+            return `${hour}:${minute} ${ampm}`;
+        }
+        
+        // تحديث العد التنازلي للصلاة القادمة
+        function updatePrayerCountdown() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute;
+            
+            // تحويل أوقات الصلاة إلى دقائق
+            const prayers = [
+                { name: 'الفجر', time: prayerTimes.fajr.hour * 60 + prayerTimes.fajr.minute },
+                { name: 'الشروق', time: prayerTimes.sunrise.hour * 60 + prayerTimes.sunrise.minute },
+                { name: 'الظهر', time: prayerTimes.dhuhr.hour * 60 + prayerTimes.dhuhr.minute },
+                { name: 'العصر', time: prayerTimes.asr.hour * 60 + prayerTimes.asr.minute },
+                { name: 'المغرب', time: prayerTimes.maghrib.hour * 60 + prayerTimes.maghrib.minute },
+                { name: 'العشاء', time: prayerTimes.isha.hour * 60 + prayerTimes.isha.minute }
+            ];
+            
+            // البحث عن الصلاة القادمة
+            let nextPrayer = null;
+            for (const prayer of prayers) {
+                if (prayer.time > currentTime) {
+                    nextPrayer = prayer;
+                    break;
+                }
+            }
+            
+            // إذا لم تكن هناك صلاة قادمة اليوم، فالصلاة القادمة هي الفجر غدًا
+            if (!nextPrayer) {
+                nextPrayer = prayers[0];
+                nextPrayer.time += 24 * 60; // إضافة 24 ساعة
+            }
+            
+            // حساب الوقت المتبقي
+            let remainingTime = nextPrayer.time - currentTime;
+            if (remainingTime < 0) {
+                remainingTime += 24 * 60;
+            }
+            
+            const remainingHours = Math.floor(remainingTime / 60);
+            const remainingMinutes = Math.floor(remainingTime % 60);
+            const remainingSeconds = 59 - now.getSeconds();
+            
+            const countdownString = `${remainingHours.toString().padStart(2, '0')}:${remainingMinutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            
+            document.getElementById('next-prayer').innerHTML = `الصلاة القادمة: <span style="color: var(--active-bg);">${nextPrayer.name}</span>`;
+            document.getElementById('countdown').textContent = countdownString;
+        }
+        
+        // زر العودة إلى الأعلى
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                document.getElementById('scrollToTop').classList.add('visible');
+            } else {
+                document.getElementById('scrollToTop').classList.remove('visible');
+            }
+        };
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // تهيئة العداد من الذاكرة المحلية
+        window.onload = () => {
+            count = parseInt(localStorage.getItem('dhikrCounter')) || 0;
+            updateCounter();
+            
+            // استرجاع عدادات التسبيح المحفوظة
+            document.querySelectorAll('.tasbih-btn').forEach(button => {
+                const uniqueId = button.closest('.dhikr-item').querySelector('p').textContent.substring(0, 20);
+                const savedCount = localStorage.getItem('tasbih_' + uniqueId);
+                if (savedCount) {
+                    button.querySelector('.tasbih-count').textContent = savedCount;
+                }
+            });
+            
+            // التحقق من وجود أوقات صلاة محفوظة
+            const savedPrayerTimes = localStorage.getItem('prayerTimes');
+            if (savedPrayerTimes) {
+                const { times, fetchTime } = JSON.parse(savedPrayerTimes);
+                const now = new Date().getTime();
+                const hoursSinceFetch = (now - fetchTime) / (1000 * 60 * 60);
+                
+                // إذا كانت الأوقات محفوظة منذ أقل من 24 ساعة، استخدمها
+                if (hoursSinceFetch < 24) {
+                    prayerTimes = times;
+                    
+                    // تحديث جدول أوقات الصلاة
+                    document.getElementById('fajr-time').textContent = formatTime(prayerTimes.fajr);
+                    document.getElementById('sunrise-time').textContent = formatTime(prayerTimes.sunrise);
+                    document.getElementById('dhuhr-time').textContent = formatTime(prayerTimes.dhuhr);
+                    document.getElementById('asr-time').textContent = formatTime(prayerTimes.asr);
+                    document.getElementById('maghrib-time').textContent = formatTime(prayerTimes.maghrib);
+                    document.getElementById('isha-time').textContent = formatTime(prayerTimes.isha);
+                    
+                    document.getElementById('loading-prayer').style.display = 'none';
+                } else {
+                    // إذا مر أكثر من 24 ساعة، جلب أوقات جديدة
+                    fetchPrayerTimes();
+                }
+            } else {
+                // إذا لم تكن هناك أوقات محفوظة، جلب أوقات جديدة
+                fetchPrayerTimes();
+            }
+            
+            // بدء تحديث الساعة
+            updateClock();
+        }
+    </script>
+</body>
+</html>
