@@ -16,8 +16,8 @@
         }
         
         :root {
-            --primary-color: #4e54c8;
-            --secondary-color: #8f94fb;
+            --primary-color: #a10000;
+            --secondary-color: #ff0000;
             --accent-color: #ff6b6b;
             --light-color: #f8f9fa;
             --dark-color: #212529;
@@ -707,25 +707,25 @@
                 <div class="social-card">
                     <i class="fab fa-tiktok"></i>
                     <h3>تيك توك</h3>
-                    <a href="#">@اسم المستخدم</a>
+                    <a href="#">@r_mwg</a>
                 </div>
                 
                 <div class="social-card">
                     <i class="fab fa-instagram"></i>
                     <h3>إنستغرام</h3>
-                    <a href="#">@اسم المستخدم</a>
+                    <a href="#">@mw_mw_1</a>
                 </div>
                 
                 <div class="social-card">
                     <i class="fab fa-facebook"></i>
                     <h3>فيسبوك</h3>
-                    <a href="#">/اسم الصفحة</a>
+                    <a href="#">https://www.facebook.com/profile.php?id=100053068776652&sk=about</a>
                 </div>
                 
                 <div class="social-card">
                     <i class="fab fa-twitter"></i>
                     <h3>تويتر</h3>
-                    <a href="#">@اسم المستخدم</a>
+                    <a href="#">@@OEe1667868</a>
                 </div>
                 
                 <div class="social-card">
@@ -737,12 +737,12 @@
                 <div class="social-card">
                     <i class="fas fa-envelope"></i>
                     <h3>البريد الإلكتروني</h3>
-                    <a href="#">example@email.com</a>
+                    <a href="#">osamaosamap0nkk@gmail.com</a>
                 </div>
             </div>
         </section>
         
-        <!-- صفحة معلومات عني -->
+        
         <section id="about" class="page">
             <div class="hero">
                 <h1>معلومات عني</h1>
@@ -766,7 +766,7 @@
     </main>
 
     <script>
-        // التنقل بين الصفحات
+        
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.nav-links a, .btn[data-page]');
             const pages = document.querySelectorAll('.page');
@@ -777,30 +777,30 @@
             audio.loop = true;
             let isPlaying = true;
             
-            // تشغيل الصوت تلقائياً
+            
             audio.play().catch(e => {
                 console.log('التشغيل التلقائي للصوت غير مسموح. يحتاج المستخدم إلى التفاعل أولاً.');
                 isPlaying = false;
                 soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
             });
             
-            // وظيفة تغيير الصفحة
+            
             function changePage(pageId) {
                 pages.forEach(page => {
                     page.classList.remove('active');
                 });
                 document.getElementById(pageId).classList.add('active');
                 
-                // إغلاق القائمة على الهواتف عند النقر على رابط
+                
                 if (window.innerWidth <= 768) {
                     nav.classList.remove('active');
                 }
                 
-                // التمرير إلى أعلى الصفحة
+               
                 window.scrollTo(0, 0);
             }
             
-            // إضافة مستمعي الأحداث لروابط التنقل
+            
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -809,19 +809,19 @@
                 });
             });
             
-            // التحكم في قائمة الهاتف
+            
             hamburger.addEventListener('click', function() {
                 nav.classList.toggle('active');
             });
             
-            // إغلاق القائمة عند النقر خارجها
+            
             document.addEventListener('click', function(e) {
                 if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
                     nav.classList.remove('active');
                 }
             });
             
-            // التحكم في الصوت
+           
             soundToggle.addEventListener('click', function() {
                 if (isPlaying) {
                     audio.pause();
@@ -833,15 +833,15 @@
                 isPlaying = !isPlaying;
             });
             
-            // تصفية المعرض
+            
             const filterButtons = document.querySelectorAll('.filter-btn');
             const galleryItems = document.querySelectorAll('.gallery-item');
             
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // إزالة النشاط من جميع الأزرار
+                    
                     filterButtons.forEach(btn => btn.classList.remove('active'));
-                    // إضافة النشاط للزر المحدد
+                    
                     this.classList.add('active');
                     
                     const filter = this.getAttribute('data-filter');
@@ -856,7 +856,7 @@
                 });
             });
             
-            // Lightbox للصور
+            
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightboxImage');
             const lightboxClose = document.getElementById('lightboxClose');
@@ -865,7 +865,7 @@
             const imageItems = document.querySelectorAll('.gallery-item[data-type="image"]');
             let currentImageIndex = 0;
             
-            // فتح Lightbox عند النقر على صورة
+            
             imageItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     currentImageIndex = index;
@@ -875,13 +875,13 @@
                 });
             });
             
-            // إغلاق Lightbox
+            
             lightboxClose.addEventListener('click', function() {
                 lightbox.style.display = 'none';
                 document.body.style.overflow = 'auto';
             });
             
-            // التنقل بين الصور
+            
             lightboxPrev.addEventListener('click', function(e) {
                 e.stopPropagation();
                 currentImageIndex = (currentImageIndex - 1 + imageItems.length) % imageItems.length;
@@ -894,7 +894,7 @@
                 lightboxImage.src = imageItems[currentImageIndex].querySelector('img').src;
             });
             
-            // إغلاق Lightbox عند النقر خارج الصورة
+            
             lightbox.addEventListener('click', function(e) {
                 if (e.target === lightbox) {
                     lightbox.style.display = 'none';
@@ -902,7 +902,7 @@
                 }
             });
             
-            // التنقل بين الصور باستخدام لوحة المفاتيح
+            
             document.addEventListener('keydown', function(e) {
                 if (lightbox.style.display === 'flex') {
                     if (e.key === 'Escape') {
